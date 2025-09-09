@@ -33,7 +33,9 @@ impl fmt::Display for TraverseError {
   }
 }
 
+/// get a BrFs object for the given path
 fn traverse<'a>(root: &'a BrFs, path: &str) -> Result<&'a BrFs, TraverseError> {
+  // thanks to voximity for this function
   let mut traversal = vec![root];
   for part in path.split('/') {
     match part {
