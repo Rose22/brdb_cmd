@@ -1,0 +1,7 @@
+[package]
+name = "brdb_cmd"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+brdb = { path = "/home/rosa/apps/git/brdb/crates/brdb" }
