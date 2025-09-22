@@ -1,5 +1,7 @@
-use std::{env, process, fmt};
+use std::{env, io, io::Write, process, fmt};
 use brdb::{Brdb, fs::BrFs, schema::ReadBrdbSchema, BrReader, BrFsReader, IntoReader};
+
+use print_bytes::println_lossy;
 
 /// convert a vector array of strings to a multiline string
 fn strings_to_lines<I, T>(iter: I) -> String
@@ -108,15 +110,12 @@ fn read_file(db: BrReader<Brdb>, path: &str) -> Result<String, &str> {
             Ok(String::from(file))
         }
         "mps" => {
-                /*
-                // get raw file bytes
-                let file_bytes = db.read_file(path).expect("couldnt read file");
+            // get raw file bytes
+            let file_bytes = db.read_file(path).expect("couldnt read file");
+            std::io::stdout().write(&file_bytes);
 
-                // return file as string
-                let file_decode = BrFile::read(file_bytes, &db).expect("couldnt decode file");
-                Ok(String::from(str::from_utf8(&file_decode)))
-                */
-                Ok(String::from("what do?!"))
+            // return file as string
+            Ok(String::from(""))
         }
         _ => {
             Err("Invalid file type")
