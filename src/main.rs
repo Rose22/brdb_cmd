@@ -1,8 +1,6 @@
 use std::{env, io, io::Write, process, fmt};
 use brdb::{Brdb, fs::BrFs, schema::ReadBrdbSchema, BrReader, BrFsReader, IntoReader};
 
-use print_bytes::println_lossy;
-
 /// convert a vector array of strings to a multiline string
 fn strings_to_lines<I, T>(iter: I) -> String
 where
