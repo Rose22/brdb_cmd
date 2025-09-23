@@ -98,25 +98,16 @@ fn read_file(db: BrReader<Brdb>, path: &str) -> Result<String, &str> {
             // return a string representation of the schema
             Ok(String::from(format!("{schema}")))
         }
-        "json" => {
-            // get raw file bytes
-            let file_bytes = db.read_file(path).expect("couldnt read file");
-            // convert bytes to string
-            let file: &str = str::from_utf8(&file_bytes).expect("couldnt convert file bytes to str");
-
-            // return file as string
-            Ok(String::from(file))
-        }
-        "mps" => {
-            // get raw file bytes
+        _ => {
+            /*
+             * for any other filetype than schema,
+             * such as .mps and .json,
+             * just get the raw file bytes
+             */
             let file_bytes = db.read_file(path).expect("couldnt read file");
             std::io::stdout().write(&file_bytes);
-
-            // return file as string
+            std::io::stdout().flush();
             Ok(String::from(""))
-        }
-        _ => {
-            Err("Invalid file type")
         }
     }
 }
@@ -135,11 +126,14 @@ fn main() {
         println!("usage: {0} <world file path> <ls|read|edit> <path>", argv[0]);
         process::exit(0);
     }
+    
+    // split arguments into variables
     let arg_name: &str = &argv[0];
     let arg_world_path: &str = &argv[1];
     let arg_cmd: &str = &argv[2];
     let arg_file_path: &str = &argv[3].trim_start_matches("/");
 
+    // open database and get virtual filesystem reader
     let db = Brdb::open(arg_world_path).expect("couldnt open file").into_reader();
     let fs: BrFs = db.get_fs().expect("couldnt get fs");
 
